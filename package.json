@@ -1,0 +1,30 @@
+{
+  "name": "base-calc",
+  "version": "1.0.0",
+  "description": "Calculadora para cálculos das 4 bases principais.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rnossal/base-calc.git"
+  },
+  "keywords": [
+    "Calculadora",
+    "Conversão",
+    "Binário",
+    "Octal",
+    "Decimal",
+    "Hexadecimal"
+  ],
+  "author": "Rafael Nossal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rnossal/base-calc/issues"
+  },
+  "homepage": "https://github.com/rnossal/base-calc#readme",
+  "devDependencies": {
+    "electron-prebuilt": ">=1.0.1"
+  }
+}

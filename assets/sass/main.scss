@@ -1,0 +1,26 @@
+// node-sass --watch --output css --output-style compressed sass
+
+// Colors
+$back-color: #2b2e3b;
+$font-color: #567a85;
+
+@font-face {
+	font-family: scode;
+	src: url("../font/SourceCodePro-Regular.ttf");
+	font-weight: normal;
+	-webkit-font-smoothing: subpixel-antialiased;
+}
+@font-face {
+	font-family: scode;
+	src: url("../font/SourceCodePro-Bold.ttf");
+	font-weight: bold;
+	-webkit-font-smoothing: subpixel-antialiased;
+}
+* {
+	font-family: scode;
+	color: $font-color;
+}
+body {
+	font-size: 13px;
+	background: $back-color;
+}

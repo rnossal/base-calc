@@ -1,0 +1,23 @@
+// node-sass --watch --output css --output-style compressed sass
+
+// Colors
+$back-color: #464d72;
+$bord-color: #1a1b23;
+$font-color: #9feaf9;
+
+#console {
+	width: 100%;
+	height: 25px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	background: $back-color;
+	border: 0;
+	border-top: 1px solid $bord-color;
+	border-radius: 3px 3px 0 0;
+	box-sizing: border-box;
+	color: $font-color;
+	font-size: 15px;
+	padding: 0 5px 0 5px;
+	outline: none;
+}
