@@ -1,3 +1,19 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+const inter = require('./console.js');
+const conso = document.querySelector("#console");
+
+conso.addEventListener('keypress', evt => {
+	if(evt.which == 13 || evt.keyCode == 13) {
+		inter.enterCom(conso.value);
+		conso.value = "";
+	}
+});
+conso.addEventListener('focusout', evt => {
+	conso.focus();
+});
+conso.focus();
+
+},{"./console.js":2}],2:[function(require,module,exports){
 const out = document.querySelector('#output');
 
 exports.enterCom = (str) => {
@@ -50,3 +66,5 @@ var searchFunc = (str, key, start, end) => {
 	str = str.substring(str.indexOf(key) + key.length);
 	return searchNested(str, start, end);
 };
+
+},{}]},{},[1]);
