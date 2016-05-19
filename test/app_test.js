@@ -17,7 +17,33 @@ conso.focus();
 const out = document.querySelector('#output');
 
 exports.enterCom = (str) => {
-	bin(str);
+	switch(str) {
+		case 'clear':
+			clear();
+			break;
+		case 'help':
+			help();
+			break;
+		case (str.match(/^bin/) || {}).input:
+			str = searchNested(str, '(', ')');
+			if (!Number.isNaN(parseInt(str))) {
+				bin(str);
+			} else {
+				out.innerHTML += 'Parâmetros inválidos na função.<br />';
+			}
+			break;
+		default:
+			out.innerHTML += 'Comando não reconhecido.<br />';
+	}
+	window.scrollTo(0,document.body.scrollHeight);
+};
+var help = () => {
+	out.innerHTML = `
+	Opções:<br />
+	&emsp;clear: Limpa o console.<br />
+	&emsp;help: Exibe essa tela.<br />
+	&emsp;bin(): Converte decimal para binário colocando o número dentro dos parenteses da função<br />
+	`;
 };
 // Limpa o console.
 var clear = () => {
@@ -29,20 +55,20 @@ var bin = (num) => {
 		tempNum = parseInt(num);
 
 	while (tempNum > 0) {
-		// out.innerHTML += 'O original é: ' + tempNum + '<br />';
-		// out.innerHTML += 'Eu divido por 2' + '<br />';
-		// out.innerHTML += 'A quantidade que eu tô tirando do original é ' + parseInt(tempNum / 2) * 2 + '<br />';
-		// out.innerHTML += 'O que sobra para dividir é ' + parseInt(tempNum / 2) + '<br />';
-		// out.innerHTML += 'Vai um ' + tempNum % 2 + ' no binário.' + '<br />';
+		out.innerHTML += 'O original é: ' + tempNum + '<br />';
+		out.innerHTML += 'Eu divido por 2' + '<br />';
+		out.innerHTML += 'A quantidade que eu tô tirando do original é ' + parseInt(tempNum / 2) * 2 + '<br />';
+		out.innerHTML += 'O que sobra para dividir é ' + parseInt(tempNum / 2) + '<br />';
+		out.innerHTML += 'Vai um ' + tempNum % 2 + ' no binário.' + '<br />';
 		res = res.replace(/^/, tempNum % 2);
 		tempNum = parseInt(tempNum / 2);
 	}
 	out.innerHTML += '----------<br />' + num + '<span class="base">10</span> = ' + res + '<span class="base">2</span><br />';
 };
 // Devolve o que tem dentro da função desde a abertura até o fechamento final.
-var searchNested = (str, left, right) => {
-	var	x = new RegExp('\\' + left + '|' + '\\' + right, 'g'),
-	l = new RegExp('\\' + left),
+var searchNested = (str, start, end) => {
+	var	x = new RegExp('\\' + start + '|' + '\\' + end, 'g'),
+	l = new RegExp('\\' + start),
 	a = null,
 	t, s, m;
 
@@ -61,10 +87,10 @@ var searchNested = (str, left, right) => {
 
 	return a;
 };
-// Procura por uma função definida (key) e onde qual caracter inicia (start) e termina (end)
-var searchFunc = (str, key, start, end) => {
-	str = str.substring(str.indexOf(key) + key.length);
-	return searchNested(str, start, end);
-};
+// // Procura por uma função definida (key) e onde qual caracter inicia (start) e termina (end)
+// var searchFunc = (str, key, start, end) => {
+// 	str = str.substring(str.indexOf(key) + key.length);
+// 	return searchNested(str, start, end);
+// };
 
 },{}]},{},[1]);
