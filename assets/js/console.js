@@ -40,7 +40,7 @@ var bin = (num) => {
 };
 // Exibe comandos disponíveis.
 var help = () => {
-	out.innerHTML = `\
+	out.innerHTML += `\
 Opções:
 
 	help:   Exibe essa tela.
@@ -48,18 +48,18 @@ Opções:
 	clear:  Limpa o console.
 	cls:    O mesmo que clear.
 	bin():  Converte decimal para binário colocando o número dentro dos parenteses da função
-	`;
+`;
 };
 // Exibe uma explicação prática da nomenclatura de números em bases diferentes de decimal.
 var nom = () => {
-	out.innerHTML = `\
+	out.innerHTML += `\
 A calculadora funciona como uma linguagem de programação e linguagens de programação podem representar específicamente números não decimais por um sufixo. Dentre os aceitos estão:
 
 	xxx:    Somente números é aceito como decimal.
 	0bxxx:  Sufixo 0b representa binário.
 	0oxxx:  Sufixo 0o representa octal.
 	0xxxx:  Sufixo 0x representa hexadecimal.
-	`;
+`;
 };
 // Limpa o console.
 var clear = () => {
@@ -67,13 +67,13 @@ var clear = () => {
 };
 var exec = (str) => {
 	if (str === null || str === '') {
-		out.innerHTML += 'Parâmetros inválidos na função.<br />';
+		out.innerHTML += 'Parâmetro inválido na função.<br />';
 	} else if (str.match(/^bin/) || str.match(/^oct/) || str.match(/^hex/) || str.match(/^dec/)) {
 		alert('Funções internas ainda não foi implementado.', 'Calma ae!');
 	} else if (!isNaN(str)) {
 		bin(str);
 	} else {
-		out.innerHTML += 'Parâmetros inválidos na função.<br />';
+		out.innerHTML += 'Parâmetro inválido na função.<br />';
 	}
 };
 // Devolve o que tem dentro da função desde a abertura até o fechamento final.
