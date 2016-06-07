@@ -1,81 +1,114 @@
-const f = require('./functions.js');
+// Constantes do console e saída de retorno.
+const consol = document.querySelector("#console");
 const out = document.querySelector('#output');
+// Requerimentos para o Node.js
+const fs = require('fs');
+// Funções para processar os valores e passar na saída.
+const f = require('./functions.js');
 
+// Executa os comandos do console ou as funções.
 exports.enterCom = (str) => {
 	switch(str) {
 		case 'clear':
 		case 'cls':
-			clear();
+			f.clear();
 			break;
 		case 'help':
-			help();
+			f.help();
 			break;
 		case 'nom':
-			nom();
+			f.nom();
 			break;
 		case (str.match(/^bin/) || {}).input:
 			str = searchNested(str, '(', ')');
 			exec(str);
 			break;
+		case '':
+			break;
 		default:
 			out.innerHTML += 'Comando não reconhecido.<br />';
 	}
-	window.scrollTo(0,document.body.scrollHeight);
+	window.scrollTo(0, document.body.scrollHeight);
 };
-// Converte decimal para binário.
-var bin = (num) => {
-	var res = '',
-		tempNum = Number(num);
 
-	while (tempNum > 0) {
-		out.innerHTML += 'O original é: ' + tempNum + '<br />';
-		out.innerHTML += 'Eu divido por 2' + '<br />';
-		out.innerHTML += 'A quantidade que eu tô tirando do original é ' + parseInt(tempNum / 2) * 2 + '<br />';
-		out.innerHTML += 'O que sobra para dividir é ' + parseInt(tempNum / 2) + '<br />';
-		out.innerHTML += 'Vai um ' + tempNum % 2 + ' no binário.' + '<br />';
-		res = res.replace(/^/, tempNum % 2);
-		tempNum = parseInt(tempNum / 2);
-	}
-	out.innerHTML += '----------<br />' + num + '<span class="base">10</span> = ' + res + '<span class="base">2</span><br />';
-};
-// Exibe comandos disponíveis.
-var help = () => {
-	out.innerHTML += `\
-Opções:
-
-	help:   Exibe essa tela.
-	nom:    Tela com a nomenclatura dos números em base.
-	clear:  Limpa o console.
-	cls:    O mesmo que clear.
-	bin():  Converte decimal para binário colocando o número dentro dos parenteses da função
-`;
-};
-// Exibe uma explicação prática da nomenclatura de números em bases diferentes de decimal.
-var nom = () => {
-	out.innerHTML += `\
-A calculadora funciona como uma linguagem de programação e linguagens de programação podem representar específicamente números não decimais por um sufixo. Dentre os aceitos estão:
-
-	xxx:    Somente números é aceito como decimal.
-	0bxxx:  Sufixo 0b representa binário.
-	0oxxx:  Sufixo 0o representa octal.
-	0xxxx:  Sufixo 0x representa hexadecimal.
-`;
-};
-// Limpa o console.
-var clear = () => {
-		out.innerHTML = '';
-};
+// Tenta executar a função.
 var exec = (str) => {
 	if (str === null || str === '') {
 		out.innerHTML += 'Parâmetro inválido na função.<br />';
 	} else if (str.match(/^bin/) || str.match(/^oct/) || str.match(/^hex/) || str.match(/^dec/)) {
 		alert('Funções internas ainda não foi implementado.', 'Calma ae!');
 	} else if (!isNaN(str)) {
-		bin(str);
+		f.bin(str);
 	} else {
 		out.innerHTML += 'Parâmetro inválido na função.<br />';
 	}
 };
+
+// Navaga pelo histórico de comandos e escreve a linha selecionada.
+// Primeiro parâmetro informar older ou newer. Qualquer outra coisa será ignorado.
+// Informar segundo parâmetro quando quiser guardar uma nova linha no histórico.
+var histCounter = 0;
+exports.history = (hist, cmd = '') => {
+	fs.stat('.calc_history', (err, stat) => {
+		if(err === null) {
+			if (cmd === '') {
+				fs.readFile('.calc_history', 'utf-8', (err, data) => {
+					data = data.split('\n').reverse();
+					switch (hist) {
+						case 'older':
+							if (histCounter < data.length - 1) {
+								histCounter++;
+							}
+							break;
+						case 'newer':
+							if (histCounter > 0) {
+								histCounter--;
+							}
+							break;
+					}
+					consol.value = data[histCounter];
+				});
+			} else {
+				histCounter = 0;
+				fs.appendFileSync('.calc_history', cmd + '\n');
+			}
+		} else if(err.code == 'ENOENT') {
+			fs.writeFile('.calc_history', '');
+		}
+	});
+};
+
+// Lê o apertar de mais de uma tecla e executas funções a partir de combinações definidas.
+var isKeyDown = [];
+keyUpDown = evt => {
+	isKeyDown[evt.keyCode] = evt.type == 'keydown';
+
+	if(isKeyDown[13]) { // Qualdo for apertado ENTER.
+		interp.enterCom(consol.value);
+		interp.history(null, consol.value);
+		consol.value = "";
+	}
+	if(isKeyDown[17] && isKeyDown[76]) { // Quando for apertado CTRL + L.
+		f.clear();
+	}
+	if(isKeyDown[38]) { // Quando for apertado a seta para cima.
+		interp.history('older');
+	}
+	if(isKeyDown[40]) { // Quando for apertado a seta para baixo.
+		interp.history('newer');
+	}
+};
+// Adiciona os eventos de apertar de teclas.
+document.addEventListener('keydown', keyUpDown);
+document.addEventListener('keyup', keyUpDown);
+
+// Sempre que o console sair de foco, foca de volta.
+consol.addEventListener('focusout', evt => {
+	consol.focus();
+});
+// Foca já ao instânciar.
+consol.focus();
+
 // Devolve o que tem dentro da função desde a abertura até o fechamento final.
 var searchNested = (str, start, end) => {
 	var	x = new RegExp('\\' + start + '|' + '\\' + end, 'g'),
@@ -98,8 +131,3 @@ var searchNested = (str, start, end) => {
 
 	return a;
 };
-// // Procura por uma função definida (key) e onde qual caracter inicia (start) e termina (end)
-// var searchFunc = (str, key, start, end) => {
-// 	str = str.substring(str.indexOf(key) + key.length);
-// 	return searchNested(str, start, end);
-// };

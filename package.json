@@ -4,8 +4,7 @@
   "description": "Calculadora para cálculos das 4 bases principais.",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js",
-    "test": "nodemon test/test.js | watchify assets/js/app.js -o test/app_test.js"
+    "start": "electron main.js"
   },
   "repository": {
     "type": "git",
