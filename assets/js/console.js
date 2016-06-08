@@ -1,13 +1,12 @@
-// Constantes do console e saída de retorno.
+// Constante do console.
 const consol = document.querySelector("#console");
-const out = document.querySelector('#output');
 // Requerimentos para o Node.js
 const fs = require('fs');
 // Funções para processar os valores e passar na saída.
 const f = require('./functions.js');
 
 // Executa os comandos do console ou as funções.
-exports.enterCom = (str) => {
+var enterCom = (str) => {
 	switch(str) {
 		case 'clear':
 		case 'cls':
@@ -26,7 +25,7 @@ exports.enterCom = (str) => {
 		case '':
 			break;
 		default:
-			out.innerHTML += 'Comando não reconhecido.<br />';
+			f.sendMessage('Comando não reconhecido.<br />');
 	}
 	window.scrollTo(0, document.body.scrollHeight);
 };
@@ -34,13 +33,13 @@ exports.enterCom = (str) => {
 // Tenta executar a função.
 var exec = (str) => {
 	if (str === null || str === '') {
-		out.innerHTML += 'Parâmetro inválido na função.<br />';
+		f.sendMessage('Parâmetro inválido na função.<br />');
 	} else if (str.match(/^bin/) || str.match(/^oct/) || str.match(/^hex/) || str.match(/^dec/)) {
 		alert('Funções internas ainda não foi implementado.', 'Calma ae!');
 	} else if (!isNaN(str)) {
 		f.bin(str);
 	} else {
-		out.innerHTML += 'Parâmetro inválido na função.<br />';
+		f.sendMessage('Parâmetro inválido na função.<br />');
 	}
 };
 
@@ -48,7 +47,7 @@ var exec = (str) => {
 // Primeiro parâmetro informar older ou newer. Qualquer outra coisa será ignorado.
 // Informar segundo parâmetro quando quiser guardar uma nova linha no histórico.
 var histCounter = 0;
-exports.history = (hist, cmd = '') => {
+var history = (hist, cmd = '') => {
 	fs.stat('.calc_history', (err, stat) => {
 		if(err === null) {
 			if (cmd === '') {
@@ -84,18 +83,18 @@ keyUpDown = evt => {
 	isKeyDown[evt.keyCode] = evt.type == 'keydown';
 
 	if(isKeyDown[13]) { // Qualdo for apertado ENTER.
-		interp.enterCom(consol.value);
-		interp.history(null, consol.value);
+		enterCom(consol.value);
+		history(null, consol.value);
 		consol.value = "";
 	}
 	if(isKeyDown[17] && isKeyDown[76]) { // Quando for apertado CTRL + L.
 		f.clear();
 	}
 	if(isKeyDown[38]) { // Quando for apertado a seta para cima.
-		interp.history('older');
+		history('older');
 	}
 	if(isKeyDown[40]) { // Quando for apertado a seta para baixo.
-		interp.history('newer');
+		history('newer');
 	}
 };
 // Adiciona os eventos de apertar de teclas.

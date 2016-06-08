@@ -43,3 +43,6 @@ A calculadora funciona como uma linguagem de programação e linguagens de progr
 	0xxxx:  Sufixo 0x representa hexadecimal.
 `;
 };
+exports.sendMessage = (message) => {
+	out.innerHTML += message;
+};
