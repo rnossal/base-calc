@@ -25,10 +25,6 @@
   },
   "homepage": "https://github.com/rnossal/base-calc#readme",
   "devDependencies": {
-    "electron-prebuilt": "latest",
-    "express": "latest",
-    "nodemon": "latest",
-    "browserify": "latest",
-    "watchify": "latest"
+    "electron-prebuilt": "latest"
   }
 }
