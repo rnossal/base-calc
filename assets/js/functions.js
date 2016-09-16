@@ -6,15 +6,19 @@ exports.bin = (num) => {
 		tempNum = Number(num);
 
 	while (tempNum > 0) {
-		out.innerHTML += 'O original é: ' + tempNum + '<br />';
-		out.innerHTML += 'Eu divido por 2' + '<br />';
-		out.innerHTML += 'A quantidade que eu tô tirando do original é ' + parseInt(tempNum / 2) * 2 + '<br />';
-		out.innerHTML += 'O que sobra para dividir é ' + parseInt(tempNum / 2) + '<br />';
-		out.innerHTML += 'Vai um ' + tempNum % 2 + ' no binário.' + '<br />';
+		out.innerHTML += `\
+O original é: ${tempNum}
+Eu divido por 2
+A quantidade que eu tô tirando do original é ${parseInt(tempNum / 2) * 2}
+O que sobra para dividir é ${parseInt(tempNum / 2)}
+Vai um ${tempNum % 2} no binário.
+`;
+
 		res = res.replace(/^/, tempNum % 2);
 		tempNum = parseInt(tempNum / 2);
 	}
-	out.innerHTML += '----------<br />' + num + '<span class="base">10</span> = ' + res + '<span class="base">2</span><br />';
+
+	out.innerHTML += `----------\n${num}<span class="base">10</span> = ${res}<span class="base">2</span><br />`;
 };
 // Limpa o console.
 exports.clear = () => {
@@ -25,11 +29,12 @@ exports.help = () => {
 	out.innerHTML += `\
 Opções:
 
-	help:   Exibe essa tela.
-	nom:    Tela com a nomenclatura dos números em base.
-	clear:  Limpa o console.
-	cls:    O mesmo que clear.
-	bin():  Converte decimal para binário colocando o número dentro dos parenteses da função
+	help:    Exibe essa tela.
+	nom:     Tela com a nomenclatura dos números em base.
+	history: Histórico de comandos.
+	clear:   Limpa o console.
+	cls:     O mesmo que clear.
+	bin():   Converte decimal para binário colocando o número dentro dos parenteses da função
 `;
 };
 // Exibe uma explicação prática da nomenclatura de números em bases diferentes de decimal.
@@ -42,6 +47,13 @@ A calculadora funciona como uma linguagem de programação e linguagens de progr
 	0oxxx:  Sufixo 0o representa octal.
 	0xxxx:  Sufixo 0x representa hexadecimal.
 `;
+};
+exports.history = (fs) => {
+	try {
+		out.innerHTML += fs.readFileSync('.calc_history', 'utf-8');
+	} catch(ex) {
+		out.innerHTML += 'Erro ao localizar aquivo de histórico de comandos';
+	}
 };
 exports.sendMessage = (message) => {
 	out.innerHTML += message;

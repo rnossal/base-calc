@@ -18,28 +18,57 @@ var enterCom = (str) => {
 		case 'nom':
 			f.nom();
 			break;
+		case 'history':
+			f.history(fs);
+			break;
 		case (str.match(/^bin/) || {}).input:
 			str = searchNested(str, '(', ')');
-			exec(str);
+			exec(str, 'b');
+			break;
+		case (str.match(/^oct/) || {}).input:
+			str = searchNested(str, '(', ')');
+			exec(str, 'o');
+			break;
+		case (str.match(/^hex/) || {}).input:
+			str = searchNested(str, '(', ')');
+			exec(str, 'h');
+			break;
+		case (str.match(/^dec/) || {}).input:
+			str = searchNested(str, '(', ')');
+			exec(str, 'd');
 			break;
 		case '':
 			break;
 		default:
-			f.sendMessage('Comando não reconhecido.<br />');
+			f.sendMessage('Comando não reconhecido.\n');
 	}
+
 	window.scrollTo(0, document.body.scrollHeight);
 };
 
 // Tenta executar a função.
-var exec = (str) => {
+var exec = (str, type) => {
 	if (str === null || str === '') {
-		f.sendMessage('Parâmetro inválido na função.<br />');
+		f.sendMessage('Parâmetro inválido na função.\n');
 	} else if (str.match(/^bin/) || str.match(/^oct/) || str.match(/^hex/) || str.match(/^dec/)) {
 		alert('Funções internas ainda não foi implementado.', 'Calma ae!');
 	} else if (!isNaN(str)) {
-		f.bin(str);
+		switch(type) {
+			case 'b':
+				f.bin(str);
+				break;
+			case 'o':
+				f.sendMessage('Função ainda não implementada.\n');
+				break;
+			case 'h':
+				f.sendMessage('Função ainda não implementada.\n');
+				break;
+			case 'd':
+				f.sendMessage('Função ainda não implementada.\n');
+				break;
+		}
 	} else {
-		f.sendMessage('Parâmetro inválido na função.<br />');
+		f.sendMessage('Parâmetro inválido na função.\n');
 	}
 };
 
@@ -69,7 +98,7 @@ var history = (hist, cmd = '') => {
 				});
 			} else {
 				histCounter = 0;
-				fs.appendFileSync('.calc_history', cmd + '\n');
+				fs.appendFileSync('.calc_history', `${cmd}\n`);
 			}
 		} else if(err.code == 'ENOENT') {
 			fs.writeFile('.calc_history', '');
@@ -83,7 +112,7 @@ keyUpDown = evt => {
 	isKeyDown[evt.keyCode] = evt.type == 'keydown';
 
 	if(isKeyDown[13]) { // Qualdo for apertado ENTER.
-		enterCom(consol.value);
+		enterCom(consol.value.trim());
 		history(null, consol.value);
 		consol.value = "";
 	}
