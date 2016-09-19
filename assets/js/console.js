@@ -6,7 +6,7 @@ const fs = require('fs');
 const f = require('./functions.js');
 
 // Executa os comandos do console ou as funções.
-var enterCom = (str) => {
+let enterCom = (str) => {
 	switch(str) {
 		case 'clear':
 		case 'cls':
@@ -47,7 +47,7 @@ var enterCom = (str) => {
 };
 
 // Tenta executar a função.
-var exec = (str, type) => {
+let exec = (str, type) => {
 	if (str === null || str === '') {
 		f.sendMessage('Parâmetro inválido na função.\n');
 	} else if (str.match(/^bin/) || str.match(/^oct/) || str.match(/^hex/) || str.match(/^dec/)) {
@@ -75,8 +75,8 @@ var exec = (str, type) => {
 // Navaga pelo histórico de comandos e escreve a linha selecionada.
 // Primeiro parâmetro informar older ou newer. Qualquer outra coisa será ignorado.
 // Informar segundo parâmetro quando quiser guardar uma nova linha no histórico.
-var histCounter = 0;
-var history = (hist, cmd = '') => {
+let histCounter = 0;
+let history = (hist, cmd = '') => {
 	fs.stat('.calc_history', (err, stat) => {
 		if(err === null) {
 			if (cmd === '') {
@@ -107,7 +107,7 @@ var history = (hist, cmd = '') => {
 };
 
 // Lê o apertar de mais de uma tecla e executas funções a partir de combinações definidas.
-var isKeyDown = [];
+let isKeyDown = [];
 keyUpDown = evt => {
 	isKeyDown[evt.keyCode] = evt.type == 'keydown';
 
@@ -138,8 +138,8 @@ consol.addEventListener('focusout', evt => {
 consol.focus();
 
 // Devolve o que tem dentro da função desde a abertura até o fechamento final.
-var searchNested = (str, start, end) => {
-	var	x = new RegExp('\\' + start + '|' + '\\' + end, 'g'),
+let searchNested = (str, start, end) => {
+	let	x = new RegExp('\\' + start + '|' + '\\' + end, 'g'),
 	l = new RegExp('\\' + start),
 	a = null,
 	t, s, m;

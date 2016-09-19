@@ -1,24 +1,40 @@
 const out = document.querySelector('#output');
+const fHelp = require('./functionHelpers');
 
 // Converte decimal para binário.
 exports.bin = (num) => {
-	var res = '',
-		tempNum = Number(num);
+	let res = '',
+		base,
+		numNormalized;
 
-	while (tempNum > 0) {
-		out.innerHTML += `\
-O original é: ${tempNum}
-Eu divido por 2
-A quantidade que eu tô tirando do original é ${parseInt(tempNum / 2) * 2}
-O que sobra para dividir é ${parseInt(tempNum / 2)}
-Vai um ${tempNum % 2} no binário.
-`;
+	if (Number(num) == 0) {
+		out.innerHTML += `0 em qualquer base é 0.\n`;
+		return;
+	} else if (num.match(/^0b/i) != null) {
+		base = 2;
+		out.innerHTML += `O número já é binário. Não seria necessário fazer a conversão.\n`;
+		res = num.substring(2);
+	} else if (num.match(/^0o/i) != null) {
+		let octToBinRet = fHelp.octToBin(num.substring(2));
 
-		res = res.replace(/^/, tempNum % 2);
-		tempNum = parseInt(tempNum / 2);
+		base = 8;
+
+		out.innerHTML += `${octToBinRet.octSplit}\n${octToBinRet.tables}\n${octToBinRet.binarySplit}\n`;
+
+		res = octToBinRet.binary;
+	} else if (num.match(/^0x/i) != null) {
+		base = 16;
+	} else {
+		let decToBinRet = fHelp.decToBin(num);
+
+		base = 10;
+
+		out.innerHTML += decToBinRet.table;
+
+		res = decToBinRet.binary;
 	}
 
-	out.innerHTML += `----------\n${num}<span class="base">10</span> = ${res}<span class="base">2</span><br />`;
+	out.innerHTML += `----------\n${(num.match(/^0o|^0b|^0x/i)) == null ? num : num.substring(2)}<span class="base">${base}</span> = ${res}<span class="base">2</span>\n\n`;
 };
 // Limpa o console.
 exports.clear = () => {
