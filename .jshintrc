@@ -1,3 +1,8 @@
 {
-	"esversion": 6
+	"esversion": 6,
+	"multistr": true,
+	"eqnull": true,
+	"loopfunc": true,
+	"-W041": false,
+	"sub": true
 }

@@ -6,7 +6,7 @@ const BrowserWindow = electron.BrowserWindow;
 let mainWindow = null;
 
 // Initialize the window
-var init = () => {
+let init = () => {
 	mainWindow = new BrowserWindow({
 		width: 400,
 		height: 600,
