@@ -6,8 +6,6 @@ exports.bin = (num) => {
 	let res = '',
 		base;
 
-	out.innerHTML += `> bin(${num})\n`;
-
 	if (Number(num) == 0) {
 		out.innerHTML += `0 em qualquer base é 0.\n`;
 		return 0;
@@ -41,7 +39,7 @@ exports.bin = (num) => {
 		res = decToBinRet.binary;
 	}
 
-	out.innerHTML += `<table><thead><tr><th colspan="2">Resultado</th></tr><tr><th>Entrada</th><th>Saída</th></tr></thead><tbody><tr><td>${base === 10 ? num : num.substring(2)}<span class="base">${base}</span></td><td>${res}<span class="base">2</span></td></tr></tbody></table>\n`;
+	out.innerHTML += `<table><thead><tr><th colspan="2">Resultado</th></tr><tr><th>Entrada</th><th>Saída</th></tr></thead><tbody><tr><td>${base === 10 ? num : num.substring(2)}<span class="base">${base}</span></td><td>${res}<span class="base">2</span></td></tr></tbody></table>`;
 
 	return res;
 };
@@ -60,7 +58,7 @@ Opções:
 	clear:   Limpa o console.
 	cls:     O mesmo que clear.
 	ans:     Resultado anterior.
-	bin():   Converte decimal para binário colocando o número dentro dos parenteses da função
+	bin():   Converte decimal para binário colocando o número dentro dos parenteses da função.
 `;
 };
 // Exibe uma explicação prática da nomenclatura de números em bases diferentes de decimal.

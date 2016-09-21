@@ -8,6 +8,9 @@ const f = require('./functions.js');
 // Executa os comandos do console ou as funções.
 let ans = 0;
 let enterCom = (str) => {
+	if (str != '')
+		f.sendMessage(`> ${str}`);
+
 	switch(str) {
 		case 'clear':
 		case 'cls':
@@ -44,7 +47,7 @@ let enterCom = (str) => {
 		case '':
 			break;
 		default:
-			f.sendMessage('Comando não reconhecido.\n');
+			f.sendMessage('Comando não reconhecido.');
 	}
 
 	window.scrollTo(0, document.body.scrollHeight);
