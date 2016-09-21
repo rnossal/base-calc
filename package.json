@@ -1,5 +1,5 @@
 {
-  "name": "base-calc",
+  "name": "baseCalc",
   "productName": "Base Calculator",
   "version": "1.0.0",
   "description": "Calculadora para cálculos das 4 bases principais.",
@@ -27,17 +27,19 @@
     "url": "https://github.com/rnossal/base-calc/issues"
   },
   "homepage": "https://github.com/rnossal/base-calc#readme",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  },
   "devDependencies": {
     "electron-builder": "latest",
     "electron-prebuilt": "latest",
     "electron-reload": "latest"
-},
+  },
   "build": {
     "appId": "com.rnossal.basecalc",
-    "category": "your.app.category.type",
+    "category": "com.rnossal.basecalc.category.accessories",
     "win": {
-      "iconUrl": "https://github.com/rnossal/base-calc/blob/master/assets/app-icon/win/icon.ico?raw=true",
-      "remoteReleases": "true",
+      "iconUrl": "https://raw.githubusercontent.com/rnossal/base-calc/master/assets/app-icon/win/icon.ico",
       "icon": "assets/app-icon/win/icon.ico"
     }
   }

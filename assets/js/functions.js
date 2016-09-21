@@ -41,7 +41,7 @@ exports.bin = (num) => {
 		res = decToBinRet.binary;
 	}
 
-	out.innerHTML += `<table><thead><tr><th colspan="2">Resultado</th></tr><tr><th>Entrada</th><th>Saída</th></tr></thead><tbody><tr><td>${base === 10 ? num : num.substring(2)}<span class="base">${base}</span></td><td>${res}<span class="base">2</span></td></tr></tbody></table>`;
+	out.innerHTML += `<table><thead><tr><th colspan="2">Resultado</th></tr><tr><th>Entrada</th><th>Saída</th></tr></thead><tbody><tr><td>${base === 10 ? num : num.substring(2)}<span class="base">${base}</span></td><td>${res}<span class="base">2</span></td></tr></tbody></table>\n`;
 
 	return res;
 };

@@ -3,6 +3,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
+if(require('electron-squirrel-startup')) return;
 // require('electron-reload')(__dirname);
 
 let mainWindow = null;
@@ -16,8 +17,6 @@ let init = () => {
 		minHeight: 600,
 		icon: `${__dirname}/assets/app-icon/png/512.png`
 	});
-
-	// mainWindow.setMenu(null);
 
 	mainWindow.loadURL(`file://${__dirname}/index.html`);
 
