@@ -6,6 +6,7 @@ const fs = require('fs');
 const f = require('./functions.js');
 
 // Executa os comandos do console ou as funções.
+let ans = 0;
 let enterCom = (str) => {
 	switch(str) {
 		case 'clear':
@@ -21,21 +22,24 @@ let enterCom = (str) => {
 		case 'history':
 			f.history(fs);
 			break;
+		case 'ans':
+			f.sendMessage(ans);
+			break;
 		case (str.match(/^bin/) || {}).input:
 			str = searchNested(str, '(', ')');
-			exec(str, 'b');
+			ans = exec(str, 'b');
 			break;
 		case (str.match(/^oct/) || {}).input:
 			str = searchNested(str, '(', ')');
-			exec(str, 'o');
+			ans = exec(str, 'o');
 			break;
 		case (str.match(/^hex/) || {}).input:
 			str = searchNested(str, '(', ')');
-			exec(str, 'h');
+			ans = exec(str, 'h');
 			break;
 		case (str.match(/^dec/) || {}).input:
 			str = searchNested(str, '(', ')');
-			exec(str, 'd');
+			ans = exec(str, 'd');
 			break;
 		case '':
 			break;
@@ -44,6 +48,8 @@ let enterCom = (str) => {
 	}
 
 	window.scrollTo(0, document.body.scrollHeight);
+
+	return ans;
 };
 
 // Tenta executar a função.
@@ -55,8 +61,7 @@ let exec = (str, type) => {
 	} else if (!isNaN(str)) {
 		switch(type) {
 			case 'b':
-				f.bin(str);
-				break;
+				return f.bin(str);
 			case 'o':
 				f.sendMessage('Função ainda não implementada.\n');
 				break;
@@ -70,6 +75,7 @@ let exec = (str, type) => {
 	} else {
 		f.sendMessage('Parâmetro inválido na função.\n');
 	}
+	return 0;
 };
 
 // Navaga pelo histórico de comandos e escreve a linha selecionada.
@@ -78,30 +84,38 @@ let exec = (str, type) => {
 let histCounter = 0;
 let history = (hist, cmd = '') => {
 	fs.stat('.calc_history', (err, stat) => {
-		if(err === null) {
-			if (cmd === '') {
+		if(err == null) {
+			if (cmd == '') {
 				fs.readFile('.calc_history', 'utf-8', (err, data) => {
 					data = data.split('\n').reverse();
 					switch (hist) {
 						case 'older':
-							if (histCounter < data.length - 1) {
+							if (histCounter < data.length - 1)
 								histCounter++;
-							}
+
 							break;
 						case 'newer':
-							if (histCounter > 0) {
+							if (histCounter > 0)
 								histCounter--;
-							}
+
 							break;
 					}
 					consol.value = data[histCounter];
 				});
 			} else {
 				histCounter = 0;
-				fs.appendFileSync('.calc_history', `${cmd}\n`);
+				fs.readFile('.calc_history', 'utf-8', (err, data) => {
+					data = data.split('\n').reverse();
+					if (data[1] != cmd)
+						fs.appendFileSync('.calc_history', `${cmd}\n`);
+				});
 			}
 		} else if(err.code == 'ENOENT') {
-			fs.writeFile('.calc_history', '');
+			if (cmd != null) {
+				fs.writeFile('.calc_history', `${cmd}\n`);
+			} else{
+				fs.writeFile('.calc_history', '');
+			}
 		}
 	});
 };
@@ -113,8 +127,8 @@ keyUpDown = evt => {
 
 	if(isKeyDown[13]) { // Qualdo for apertado ENTER.
 		enterCom(consol.value.trim());
-		history(null, consol.value);
-		consol.value = "";
+		history(null, consol.value.trim());
+		consol.value = '';
 	}
 	if(isKeyDown[17] && isKeyDown[76]) { // Quando for apertado CTRL + L.
 		f.clear();
@@ -140,9 +154,11 @@ consol.focus();
 // Devolve o que tem dentro da função desde a abertura até o fechamento final.
 let searchNested = (str, start, end) => {
 	let	x = new RegExp('\\' + start + '|' + '\\' + end, 'g'),
-	l = new RegExp('\\' + start),
-	a = null,
-	t, s, m;
+		l = new RegExp('\\' + start),
+		a = null,
+		t,
+		s,
+		m;
 
 	do {
 		t = 0;
